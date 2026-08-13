@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+:root {
+  --primary: #2f3e8c;
+  --primary-soft: color-mix(in oklab, var(--primary) 12%, white);
+  --primary-softer: color-mix(in oklab, var(--primary) 6%, white);
+  --primary-dark: color-mix(in oklab, var(--primary) 85%, black);
+
+  --ink: #1c2230;
+  --sub: #5b6472;
+  --border: #e2e5eb;
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+
+  --success: #1f8a5b;
+  --success-soft: #e4f4ec;
+  --warn: #b5790f;
+  --warn-soft: #fbeecd;
+  --danger: #c23b3b;
+  --danger-soft: #f9e4e4;
+  --neutral: #6b7280;
+  --neutral-soft: #eef0f3;
+}
+
+@theme inline {
+  --color-primary: var(--primary);
+  --color-primary-soft: var(--primary-soft);
+  --color-primary-softer: var(--primary-softer);
+  --color-primary-dark: var(--primary-dark);
+
+  --color-ink: var(--ink);
+  --color-sub: var(--sub);
+  --color-border: var(--border);
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-neutral: var(--neutral);
+  --color-neutral-soft: var(--neutral-soft);
+
+  --radius-input: 8px;
+  --radius-card: 14px;
+  --radius-card-sm: 12px;
+  --radius-pill: 999px;
+
+  --shadow-modal: 0 20px 60px rgba(20, 25, 40, 0.2);
+  --shadow-dropdown: 0 12px 32px rgba(20, 25, 40, 0.12);
+  --shadow-login-card: 0 12px 40px rgba(20, 25, 40, 0.08);
+
+  --font-sans: var(--font-source-sans), system-ui, sans-serif;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--sub);
+  opacity: 0.6;
+}

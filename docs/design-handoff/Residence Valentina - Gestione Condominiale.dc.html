@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { margin: 0; }
+    a { color: inherit; text-decoration: none; }
+    * { box-sizing: border-box; }
+    input::placeholder { color: inherit; opacity: 0.5; }
+  </style>
+</helmet>
+
+<div style="{{ appShellStyle }}">
+
+  <sc-if value="{{ isLogin }}" hint-placeholder-val="{{ false }}">
+    <div style="{{ loginWrapStyle }}">
+      <div style="{{ loginCardStyle }}">
+        <div style="{{ logoBadgeStyle }}">RV</div>
+        <div style="{{ loginTitleStyle }}">Residence Valentina</div>
+        <div style="{{ loginSubStyle }}">Gestione condominiale &mdash; accesso amministratore</div>
+        <div style="{{ fieldGroupStyle }}">
+          <label style="{{ labelStyle }}">Email</label>
+          <input style="{{ inputStyle }}" type="email" placeholder="nome@residencevalentina.it" value="{{ loginEmail }}" onChange="{{ onLoginEmailChange }}"></input>
+        </div>
+        <div style="{{ fieldGroupStyle }}">
+          <label style="{{ labelStyle }}">Password</label>
+          <input style="{{ inputStyle }}" type="password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" value="{{ loginPassword }}" onChange="{{ onLoginPasswordChange }}"></input>
+        </div>
+        <button style="{{ primaryButtonStyle }}" onClick="{{ onLogin }}">Accedi</button>
+        <div style="{{ loginLinksStyle }}">
+          <a href="#" style="{{ linkStyle }}">Password dimenticata?</a>
+          <a href="#" style="{{ linkStyle }}">Richiedi accesso residente</a>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isApp }}" hint-placeholder-val="{{ true }}">
+    <div style="{{ appFrameStyle }}">
+    <div style="{{ dropdownOverlayStyle }}" onClick="{{ closeMenus }}"></div>
+
+    <div style="{{ backdropStyle }}" onClick="{{ closeMobileNav }}"></div>
+
+    <sc-if value="{{ activeModal }}" hint-placeholder-val="{{ false }}">
+      <div style="{{ modalOverlayStyle }}" onClick="{{ closeModal }}">
+        <div style="{{ modalCardStyle }}" onClick="{{ stopPropagation }}">
+          <div style="{{ modalHeaderStyle }}">
+            <div style="{{ modalTitleStyle }}">{{ modalTitle }}</div>
+            <button style="{{ modalCloseStyle }}" onClick="{{ closeModal }}">&times;</button>
+          </div>
+
+          <div style="{{ modalScrollAreaStyle }}">
+
+          <sc-if value="{{ isModalUnit }}" hint-placeholder-val="{{ false }}">
+            <div style="{{ modalFieldStackStyle }}">
+              <div style="{{ fieldGroupStyle }}"><label style="{{ labelStyle }}">Unit&agrave;</label><input style="{{ inputStyle }}" type="text" placeholder="Es. Interno 11" value="{{ unitFormName }}" onChange="{{ onUnitFormNameChange }}"></input></div>
+              <div style="{{ fieldGroupStyle }}"><label style="{{ labelStyle }}">Proprietario</label><input style="{{ inputStyle }}" type="text" placeholder="Nome e cognome" value="{{ unitFormOwner }}" onChange="{{ onUnitFormOwnerChange }}"></input></div>
+              <div style="{{ fieldGroupStyle }}"><label style="{{ labelStyle }}">Piano</label><input style="{{ inputStyle }}" type="text" placeholder="Es. Piano 2" value="{{ unitFormFloor }}" onChange="{{ onUnitFormFloorChange }}"></input></div>
+              <div style="{{ fieldGroupStyle }}"><label style="{{ labelStyle }}">Quota millesimale</label><input style="{{ inputStyle }}" type="text" placeholder="Es. 4,5%" value="{{ unitFormQuota }}" onChange="{{ onUnitFormQuotaChange }}"></input></div>
+              <div style="{{ fieldGroupStyle }}"><label style="{{ labelStyle }}">Stato</label>
+                <select style="{{ inputStyle }}" value="{{ unitFormStatus }}" onChange="{{ onUnitFormStatusChange }}">
+                  <option value="Pagato">Pagato</option>
+                  <option value="In attesa">In attesa</option>
+                  <option value="Scaduto">Scaduto</option>
+                  <option value="Vacante">Vacante</option>
+                </select>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ isModalReport }}" hint-placeholder-val="{{ false }}">
+            <div style="{{ modalFieldStackStyle }}">
+              <div style="{{ fieldGroupStyle }}"><label style="{{ labelStyle }}">Titolo segnalazione</label><input style="{{ inputStyle }}" type="text" placeholder="Es. Perdita acqua garage" value="{{ reportFormTitle }}" onChange="{{ onReportFormTitleChange }}"></input></div>
+              <div style="{{ fieldGroupStyle }}"><label style="{{ labelStyle }}">Unit&agrave; / parti comuni</label><input style="{{ inputStyle }}" type="text" placeholder="Es. Interno 5 o Parti comuni" value="{{ reportFormUnit }}" onChange="{{ onReportFormUnitChange }}"></input></div>
+              <div style="{{ fieldGroupStyle }}"><label style="{{ labelStyle }}">Descrizione</label><textarea style="{{ textareaStyle }}" placeholder="Descrivi il problema" value="{{ reportFormDescription }}" onChange="{{ onReportFormDescriptionChange }}"></textarea></div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ isModalDocument }}" hint-placeholder-val="{{ false }}">
+            <div style="{{ modalFieldStackStyle }}">
+              <div style="{{ fieldGroupStyle }}"><label style="{{ labelStyle }}">Titolo documento</label><input style="{{ inputStyle }}" type="text" placeholder="Es. Verbale assemblea" value="{{ documentFormTitle }}" onChange="{{ onDocumentFormTitleChange }}"></input></div>
+              <div style="{{ fieldGroupStyle }}"><label style="{{ labelStyle }}">Tipo</label>
+                <select style="{{ inputStyle }}" value="{{ documentFormType }}" onChange="{{ onDocumentFormTypeChange }}">
+                  <option value="Verbale">Verbale</option>
+                  <option value="Regolamento">Regolamento</option>
+                  <option value="Bilancio">Bilancio</option>
+                  <option value="Preventivo">Preventivo</option>
+                  <option value="Assicurazione">Assicurazione</option>
+                  <option value="Planimetria">Planimetria</option>
+                  <option value="Altro">Altro</option>
+                </select>
+              </div>
+              <div style="{{ fieldGroupStyle }}"><label style="{{ labelStyle }}">File</label><input style="{{ inputStyle }}" type="file"></input></div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ isModalUser }}" hint-placeholder-val="{{ false }}">
+            <div style="{{ modalFieldStackStyle }}">
+              <div style="{{ fieldGroupStyle }}"><label style="{{ labelStyle }}">Nome completo</label><input style="{{ inputStyle }}" type="text" placeholder="Nome e cognome" value="{{ userFormName }}" onChange="{{ onUserFormNameChange }}"></input></div>
+              <div style="{{ fieldGroupStyle }}"><label style="{{ labelStyle }}">Ruolo</label>
+                <select style="{{ inputStyle }}" value="{{ userFormRole }}" onChange="{{ onUserFormRoleChange }}">
+                  <option value="Amministratore">Amministratore</option>
+                  <option value="Residente">Residente</option>
+                </select>
+              </div>
+              <div style="{{ fieldGroupStyle }}"><label style="{{ labelStyle }}">Unit&agrave; collegata</label><input style="{{ inputStyle }}" type="text" placeholder="Es. Interno 3 (opzionale)" value="{{ userFormUnit }}" onChange="{{ onUserFormUnitChange }}"></input></div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ isModalProfile }}" hint-placeholder-val="{{ false }}">
+            <div style="{{ modalFieldStackStyle }}">
+              <div style="{{ fieldGroupStyle }}"><label style="{{ labelStyle }}">Nome</label><input style="{{ inputStyle }}" type="text" value="{{ profileFormName }}" onChange="{{ onProfileFormNameChange }}"></input></div>
+              <div style="{{ fieldGroupStyle }}"><label style="{{ labelStyle }}">Email</label><input style="{{ inputStyle }}" type="email" value="{{ profileFormEmail }}" onChange="{{ onProfileFormEmailChange }}"></input></div>
+              <div style="{{ fieldGroupStyle }}"><label style="{{ labelStyle }}">Telefono</label><input style="{{ inputStyle }}" type="text" value="{{ profileFormPhone }}" onChange="{{ onProfileFormPhoneChange }}"></input></div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ isModalPassword }}" hint-placeholder-val="{{ false }}">
+            <div style="{{ modalFieldStackStyle }}">
+              <div style="{{ fieldGroupStyle }}"><label style="{{ labelStyle }}">Password attuale</label><input style="{{ inputStyle }}" type="password" value="{{ passwordFormCurrent }}" onChange="{{ onPasswordFormCurrentChange }}"></input></div>
+              <div style="{{ fieldGroupStyle }}"><label style="{{ labelStyle }}">Nuova password</label><input style="{{ inputStyle }}" type="password" value="{{ passwordFormNext }}" onChange="{{ onPasswordFormNextChange }}"></input></div>
+              <div style="{{ fieldGroupStyle }}"><label style="{{ labelStyle }}">Conferma nuova password</label><input style="{{ inputStyle }}" type="password" value="{{ passwordFormConfirm }}" onChange="{{ onPasswordFormConfirmChange }}"></input></div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ modalError }}" hint-placeholder-val="{{ false }}">
+            <div style="{{ formErrorStyle }}">{{ modalError }}</div>
+          </sc-if>
+
+          </div>
+
+          <div style="{{ modalFooterStyle }}">
+            <button style="{{ primaryButtonStyle }}" onClick="{{ onSaveModal }}">Salva</button>
+            <button style="{{ secondaryButtonStyle }}" onClick="{{ closeModal }}">Annulla</button>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <aside style="{{ sidebarStyle }}">
+      <div style="{{ sidebarHeaderStyle }}">
+        <div style="{{ logoBadgeSmallStyle }}">RV</div>
+        <div>
+          <div style="{{ sidebarBrandStyle }}">Residence Valentina</div>
+          <div style="{{ sidebarBrandSubStyle }}">Amministrazione</div>
+        </div>
+      </div>
+
+      <div style="{{ navGroupLabelStyle }}">Generale</div>
+      <sc-for list="{{ navItemsGeneral }}" as="item" hint-placeholder-count="5">
+        <button style="{{ item.style }}" onClick="{{ item.onClick }}">
+          <span style="{{ item.dotStyle }}"></span>
+          <span style="{{ item.textStyle }}">{{ item.label }}</span>
+        </button>
+      </sc-for>
+
+      <div style="{{ navGroupLabelStyle }}">Account</div>
+      <sc-for list="{{ navItemsAccount }}" as="item" hint-placeholder-count="2">
+        <button style="{{ item.style }}" onClick="{{ item.onClick }}">
+          <span style="{{ item.dotStyle }}"></span>
+          <span style="{{ item.textStyle }}">{{ item.label }}</span>
+        </button>
+      </sc-for>
+    </aside>
+
+    <div style="{{ mainColStyle }}">
+      <header style="{{ topbarStyle }}">
+        <div style="{{ topbarLeftStyle }}">
+          <button style="{{ hamburgerStyle }}" onClick="{{ toggleMobileNav }}">&#9776;</button>
+          <div style="{{ pageTitleStyle }}">{{ pageTitle }}</div>
+        </div>
+        <div style="{{ topbarRightStyle }}">
+          <input style="{{ searchInputStyle }}" type="text" placeholder="Cerca unit&agrave;, spese, documenti&hellip;"></input>
+          <div style="{{ dropdownAnchorStyle }}">
+            <button style="{{ iconButtonStyle }}" onClick="{{ toggleNotif }}">
+              &#128276;
+              <sc-if value="{{ hasUnread }}" hint-placeholder-val="{{ false }}">
+                <span style="{{ unreadDotStyle }}"></span>
+              </sc-if>
+            </button>
+            <sc-if value="{{ notifOpen }}" hint-placeholder-val="{{ false }}">
+              <div style="{{ notifDropdownStyle }}">
+                <div style="{{ dropdownHeaderStyle }}">Notifiche</div>
+                <sc-for list="{{ notifPreview }}" as="n" hint-placeholder-count="4">
+                  <div style="{{ n.rowStyle }}">
+                    <span style="{{ n.dotStyle }}"></span>
+                    <div>
+                      <div style="{{ n.textStyle }}">{{ n.text }}</div>
+                      <div style="{{ n.timeStyle }}">{{ n.timeLabel }}</div>
+                    </div>
+                  </div>
+                </sc-for>
+                <button style="{{ dropdownFooterLinkStyle }}" onClick="{{ goNotifications }}">Vedi tutte</button>
+              </div>
+            </sc-if>
+          </div>
+          <div style="{{ dropdownAnchorStyle }}">
+            <button style="{{ avatarButtonStyle }}" onClick="{{ toggleProfileMenu }}">MC</button>
+            <sc-if value="{{ profileMenuOpen }}" hint-placeholder-val="{{ false }}">
+              <div style="{{ profileDropdownStyle }}">
+                <div style="{{ profileDropdownNameStyle }}">Marco Codeluppi</div>
+                <div style="{{ profileDropdownRoleStyle }}">Amministratore condominio</div>
+                <div style="{{ dropdownDividerStyle }}"></div>
+                <button style="{{ dropdownItemStyle }}" onClick="{{ goProfile }}">Profilo</button>
+                <button style="{{ dropdownItemStyle }}" onClick="{{ goSettings }}">Impostazioni</button>
+                <div style="{{ dropdownDividerStyle }}"></div>
+                <button style="{{ dropdownItemDangerStyle }}" onClick="{{ onLogout }}">Esci</button>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+      </header>
+
+      <main style="{{ contentStyle }}">
+
+        <sc-if value="{{ isDashboard }}" hint-placeholder-val="{{ true }}">
+          <div>
+            <div style="{{ greetingStyle }}">Buongiorno, Marco</div>
+            <div style="{{ greetingSubStyle }}">Ecco la situazione del Residence Valentina oggi.</div>
+            <div style="{{ kpiRowStyle }}">
+              <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="3">
+                <div style="{{ kpiCardStyle }}">
+                  <div style="{{ kpiLabelStyle }}">{{ k.label }}</div>
+                  <div style="{{ kpiValueStyle }}">{{ k.value }}</div>
+                  <div style="{{ kpiSubStyle }}">{{ k.sub }}</div>
+                </div>
+              </sc-for>
+            </div>
+
+            <div style="{{ dashGridStyle }}">
+              <div style="{{ panelStyle }}">
+                <div style="{{ panelHeaderStyle }}">
+                  <div style="{{ panelTitleStyle }}">Spese recenti</div>
+                  <button style="{{ panelLinkStyle }}" onClick="{{ goExpenses }}">Vedi tutte</button>
+                </div>
+                <sc-for list="{{ recentExpenses }}" as="e" hint-placeholder-count="5">
+                  <div style="{{ e.miniRowStyle }}" onClick="{{ e.onClick }}">
+                    <div>
+                      <div style="{{ e.miniTitleStyle }}">{{ e.description }}</div>
+                      <div style="{{ e.miniSubStyle }}">{{ e.dateLabel }} &middot; {{ e.category }}</div>
+                    </div>
+                    <div style="{{ e.miniRightStyle }}">
+                      <div style="{{ e.miniAmountStyle }}">{{ e.amountLabel }}</div>
+                      <span style="{{ e.badgeStyle }}">{{ e.statusLabel }}</span>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+
+              <div style="{{ panelStyle }}">
+                <div style="{{ panelHeaderStyle }}">
+                  <div style="{{ panelTitleStyle }}">Segnalazioni aperte</div>
+                  <button style="{{ panelLinkStyle }}" onClick="{{ goReports }}">Vedi tutte</button>
+                </div>
+                <sc-for list="{{ openReports }}" as="r" hint-placeholder-count="4">
+                  <div style="{{ r.miniRowStyle }}">
+                    <div>
+                      <div style="{{ r.miniTitleStyle }}">{{ r.title }}</div>
+                      <div style="{{ r.miniSubStyle }}">{{ r.unitLabel }} &middot; {{ r.dateLabel }}</div>
+                    </div>
+                    <span style="{{ r.badgeStyle }}">{{ r.statusLabel }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isUnits }}" hint-placeholder-val="{{ false }}">
+          <div>
+            <div style="{{ viewHeaderRowStyle }}">
+              <div>
+                <div style="{{ viewTitleStyle }}">Unit&agrave; immobiliari</div>
+                <div style="{{ viewSubStyle }}">24 unit&agrave; totali &middot; 21 occupate &middot; 3 vacanti</div>
+              </div>
+              <button style="{{ primaryButtonSmallStyle }}" onClick="{{ openModalUnit }}">+ Nuova unit&agrave;</button>
+            </div>
+            <div style="{{ tableCardStyle }}">
+              <div style="{{ tableHeaderRowStyle }}">
+                <div style="{{ tableHeadCellStyle }}">Unit&agrave;</div>
+                <div style="{{ tableHeadCellStyle }}">Proprietario</div>
+                <div style="{{ tableHeadCellStyle }}">Piano</div>
+                <div style="{{ tableHeadCellStyle }}">Quota millesimale</div>
+                <div style="{{ tableHeadCellStyle }}">Stato</div>
+              </div>
+              <sc-for list="{{ unitRows }}" as="u" hint-placeholder-count="10">
+                <div style="{{ u.rowStyle }}">
+                  <div style="{{ u.cellStrongStyle }}">{{ u.unit }}</div>
+                  <div style="{{ u.cellStyle }}">{{ u.owner }}</div>
+                  <div style="{{ u.cellStyle }}">{{ u.floor }}</div>
+                  <div style="{{ u.cellStyle }}">{{ u.quota }}</div>
+                  <div><span style="{{ u.badgeStyle }}">{{ u.statusLabel }}</span></div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isExpenses }}" hint-placeholder-val="{{ false }}">
+          <div>
+            <div style="{{ viewHeaderRowStyle }}">
+              <div>
+                <div style="{{ viewTitleStyle }}">Spese &amp; pagamenti</div>
+                <div style="{{ viewSubStyle }}">Registro delle spese condominiali</div>
+              </div>
+              <button style="{{ primaryButtonSmallStyle }}" onClick="{{ goExpenseForm }}">+ Nuova spesa</button>
+            </div>
+            <div style="{{ tableCardStyle }}">
+              <div style="{{ tableHeaderRowStyle5 }}">
+                <div style="{{ tableHeadCellStyle }}">Data</div>
+                <div style="{{ tableHeadCellStyle }}">Descrizione</div>
+                <div style="{{ tableHeadCellStyle }}">Categoria</div>
+                <div style="{{ tableHeadCellStyle }}">Importo</div>
+                <div style="{{ tableHeadCellStyle }}">Stato</div>
+              </div>
+              <sc-for list="{{ expenseRows }}" as="e" hint-placeholder-count="8">
+                <div style="{{ e.rowStyle5 }}" onClick="{{ e.onClick }}">
+                  <div style="{{ e.cellStyle }}">{{ e.dateLabel }}</div>
+                  <div style="{{ e.cellStrongStyle }}">{{ e.description }}</div>
+                  <div style="{{ e.cellStyle }}">{{ e.category }}</div>
+                  <div style="{{ e.cellStyle }}">{{ e.amountLabel }}</div>
+                  <div><span style="{{ e.badgeStyle }}">{{ e.statusLabel }}</span></div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isExpenseDetail }}" hint-placeholder-val="{{ false }}">
+          <div>
+            <button style="{{ backLinkStyle }}" onClick="{{ goExpenses }}">&larr; Torna a spese &amp; pagamenti</button>
+            <div style="{{ detailGridStyle }}">
+              <div style="{{ panelStyle }}">
+                <div style="{{ detailTitleStyle }}">{{ selectedExpense.description }}</div>
+                <div style="{{ detailSubStyle }}">{{ selectedExpense.category }} &middot; {{ selectedExpense.dateLabel }}</div>
+                <div style="{{ detailAmountStyle }}">{{ selectedExpense.amountLabel }}</div>
+                <div style="{{ detailRowStyle }}">
+                  <div style="{{ detailLabelStyle }}">Stato</div>
+                  <span style="{{ selectedExpense.badgeStyle }}">{{ selectedExpense.statusLabel }}</span>
+                </div>
+                <div style="{{ detailRowStyle }}">
+                  <div style="{{ detailLabelStyle }}">Ripartizione</div>
+                  <div style="{{ detailValueStyle }}">Per millesimi di proprietà, su tutte le unità</div>
+                </div>
+                <div style="{{ detailRowStyle }}">
+                  <div style="{{ detailLabelStyle }}">Allegati</div>
+                  <div style="{{ detailValueStyle }}">fattura-{{ selectedExpense.id }}.pdf</div>
+                </div>
+                <div style="{{ detailActionsStyle }}">
+                  <button style="{{ secondaryButtonStyle }}">Modifica</button>
+                  <button style="{{ dangerButtonStyle }}">Elimina</button>
+                </div>
+              </div>
+              <div style="{{ panelStyle }}">
+                <div style="{{ panelTitleStyle }}">Cronologia</div>
+                <div style="{{ timelineRowStyle }}"><span style="{{ timelineDotDoneStyle }}"></span> Spesa registrata &middot; {{ selectedExpense.dateLabel }}</div>
+                <div style="{{ timelineRowStyle }}"><span style="{{ timelineDotDoneStyle }}"></span> Ripartita tra le unit&agrave;</div>
+                <div style="{{ timelineRowStyle }}"><span style="{{ timelineDotPendingStyle }}"></span> In attesa di saldo</div>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isExpenseForm }}" hint-placeholder-val="{{ false }}">
+          <div>
+            <button style="{{ backLinkStyle }}" onClick="{{ goExpenses }}">&larr; Torna a spese &amp; pagamenti</button>
+            <div style="{{ formCardStyle }}">
+              <div style="{{ viewTitleStyle }}">Nuova spesa</div>
+              <div style="{{ formGridStyle }}">
+                <div style="{{ fieldGroupStyle }}">
+                  <label style="{{ labelStyle }}">Descrizione</label>
+                  <input style="{{ inputStyle }}" type="text" placeholder="Es. Manutenzione ascensore" value="{{ formDescription }}" onChange="{{ onFormDescriptionChange }}"></input>
+                </div>
+                <div style="{{ fieldGroupStyle }}">
+                  <label style="{{ labelStyle }}">Categoria</label>
+                  <select style="{{ inputStyle }}" value="{{ formCategory }}" onChange="{{ onFormCategoryChange }}">
+                    <option value="Manutenzione">Manutenzione</option>
+                    <option value="Pulizie">Pulizie</option>
+                    <option value="Utenze">Utenze</option>
+                    <option value="Assicurazione">Assicurazione</option>
+                    <option value="Amministrazione">Amministrazione</option>
+                  </select>
+                </div>
+                <div style="{{ fieldGroupStyle }}">
+                  <label style="{{ labelStyle }}">Importo (&euro;)</label>
+                  <input style="{{ inputStyle }}" type="number" placeholder="0,00" value="{{ formAmount }}" onChange="{{ onFormAmountChange }}"></input>
+                </div>
+                <div style="{{ fieldGroupStyle }}">
+                  <label style="{{ labelStyle }}">Data</label>
+                  <input style="{{ inputStyle }}" type="date" value="{{ formDate }}" onChange="{{ onFormDateChange }}"></input>
+                </div>
+                <div style="{{ fieldGroupFullStyle }}">
+                  <label style="{{ labelStyle }}">Ripartizione</label>
+                  <select style="{{ inputStyle }}" value="{{ formSplit }}" onChange="{{ onFormSplitChange }}">
+                    <option value="Unita">Per unit&agrave; abitativa</option>
+                    <option value="Persone">Per numero di persone</option>
+                    <option value="Millesimi">Per millesimi</option>
+                  </select>
+                </div>
+                <div style="{{ fieldGroupFullStyle }}">
+                  <label style="{{ labelStyle }}">Note</label>
+                  <textarea style="{{ textareaStyle }}" placeholder="Note aggiuntive (opzionale)" value="{{ formNotes }}" onChange="{{ onFormNotesChange }}"></textarea>
+                </div>
+              </div>
+              <sc-if value="{{ formError }}" hint-placeholder-val="{{ false }}">
+                <div style="{{ formErrorStyle }}">{{ formError }}</div>
+              </sc-if>
+              <div style="{{ detailActionsStyle }}">
+                <button style="{{ primaryButtonStyle }}" onClick="{{ onSaveExpense }}">Salva spesa</button>
+                <button style="{{ secondaryButtonStyle }}" onClick="{{ goExpenses }}">Annulla</button>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isReports }}" hint-placeholder-val="{{ false }}">
+          <div>
+            <div style="{{ viewHeaderRowStyle }}">
+              <div>
+                <div style="{{ viewTitleStyle }}">Segnalazioni</div>
+                <div style="{{ viewSubStyle }}">Manutenzione e problemi segnalati dai residenti</div>
+              </div>
+              <button style="{{ primaryButtonSmallStyle }}" onClick="{{ openModalReport }}">+ Nuova segnalazione</button>
+            </div>
+            <div style="{{ cardListStyle }}">
+              <sc-for list="{{ reportRows }}" as="r" hint-placeholder-count="6">
+                <div style="{{ reportCardStyle }}">
+                  <div style="{{ reportCardHeaderStyle }}">
+                    <div style="{{ reportCardTitleStyle }}">{{ r.title }}</div>
+                    <span style="{{ r.badgeStyle }}">{{ r.statusLabel }}</span>
+                  </div>
+                  <div style="{{ reportCardMetaStyle }}">{{ r.unitLabel }} &middot; {{ r.dateLabel }} &middot; Assegnato a {{ r.assignee }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isDocuments }}" hint-placeholder-val="{{ false }}">
+          <div>
+            <div style="{{ viewHeaderRowStyle }}">
+              <div>
+                <div style="{{ viewTitleStyle }}">Documenti &amp; bacheca</div>
+                <div style="{{ viewSubStyle }}">Verbali, regolamenti, bilanci e avvisi</div>
+              </div>
+              <button style="{{ primaryButtonSmallStyle }}" onClick="{{ openModalDocument }}">+ Carica documento</button>
+            </div>
+            <div style="{{ docGridStyle }}">
+              <sc-for list="{{ documentRows }}" as="d" hint-placeholder-count="6">
+                <div style="{{ docCardStyle }}">
+                  <div style="{{ docTypeChipStyle }}">{{ d.typeLabel }}</div>
+                  <div style="{{ docTitleStyle }}">{{ d.title }}</div>
+                  <div style="{{ docDateStyle }}">{{ d.dateLabel }}</div>
+                  <button style="{{ docDownloadStyle }}">Scarica</button>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isSettings }}" hint-placeholder-val="{{ false }}">
+          <div>
+            <div style="{{ viewHeaderRowStyle }}">
+              <div style="{{ viewTitleStyle }}">Impostazioni</div>
+            </div>
+            <div style="{{ settingsGridStyle }}">
+              <div style="{{ panelStyle }}">
+                <div style="{{ panelTitleStyle }}">Dati condominio</div>
+                <div style="{{ fieldGroupStyle }}"><label style="{{ labelStyle }}">Nome</label><input style="{{ inputStyle }}" type="text" value="Residence Valentina" readOnly="{{ true }}"></input></div>
+                <div style="{{ fieldGroupStyle }}"><label style="{{ labelStyle }}">Indirizzo</label><input style="{{ inputStyle }}" type="text" value="Via dei Tigli 14, Modena" readOnly="{{ true }}"></input></div>
+                <div style="{{ fieldGroupStyle }}"><label style="{{ labelStyle }}">Codice fiscale</label><input style="{{ inputStyle }}" type="text" value="94032100365" readOnly="{{ true }}"></input></div>
+                <div style="{{ fieldGroupStyle }}"><label style="{{ labelStyle }}">Numero di unit&agrave; abitative</label><input style="{{ inputStyle }}" type="number" min="1" value="{{ unitCount }}" onChange="{{ onUnitCountChange }}"></input></div>
+              </div>
+              <div style="{{ panelStyle }}">
+                <div style="{{ panelTitleStyle }}">Ripartizione spese condominiali</div>
+                <sc-for list="{{ splitOptions }}" as="o" hint-placeholder-count="3">
+                  <button style="{{ o.rowStyle }}" onClick="{{ o.onClick }}">
+                    <span style="{{ o.radioOuterStyle }}"><span style="{{ o.radioInnerStyle }}"></span></span>
+                    <span style="{{ o.labelStyle }}">{{ o.label }}</span>
+                  </button>
+                </sc-for>
+              </div>
+              <div style="{{ panelStyle }}">
+                <div style="{{ panelTitleStyle }}">Preferenze notifiche</div>
+                <div style="{{ toggleRowStyle }}"><span>Nuove segnalazioni</span><button style="{{ toggleOnStyle }}"><span style="{{ toggleKnobOnStyle }}"></span></button></div>
+                <div style="{{ toggleRowStyle }}"><span>Pagamenti in scadenza</span><button style="{{ toggleOnStyle }}"><span style="{{ toggleKnobOnStyle }}"></span></button></div>
+                <div style="{{ toggleRowStyle }}"><span>Documenti caricati</span><button style="{{ toggleOffStyle }}"><span style="{{ toggleKnobOffStyle }}"></span></button></div>
+              </div>
+              <div style="{{ panelStyle }}">
+                <div style="{{ panelHeaderStyle }}">
+                  <div style="{{ panelTitleStyle }}">Utenti e ruoli</div>
+                  <button style="{{ panelLinkStyle }}" onClick="{{ openModalUser }}">+ Nuovo utente</button>
+                </div>
+                <sc-for list="{{ userListRows }}" as="u" hint-placeholder-count="2">
+                  <div style="{{ userRowStyle }}"><span style="{{ avatarSmallStyle }}">{{ u.initials }}</span><div><div style="{{ userNameStyle }}">{{ u.name }}</div><div style="{{ userRoleStyle }}">{{ u.roleLabel }}</div></div></div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isProfile }}" hint-placeholder-val="{{ false }}">
+          <div>
+            <div style="{{ profileCardStyle }}">
+              <div style="{{ profileAvatarStyle }}">{{ profileInitials }}</div>
+              <div style="{{ profileNameStyle }}">{{ profileName }}</div>
+              <div style="{{ profileRoleStyle }}">Amministratore condominio</div>
+              <div style="{{ profileFieldRowStyle }}"><span style="{{ detailLabelStyle }}">Email</span><span style="{{ detailValueStyle }}">{{ profileEmail }}</span></div>
+              <div style="{{ profileFieldRowStyle }}"><span style="{{ detailLabelStyle }}">Telefono</span><span style="{{ detailValueStyle }}">{{ profilePhone }}</span></div>
+              <div style="{{ profileFieldRowStyle }}"><span style="{{ detailLabelStyle }}">Condominio gestito</span><span style="{{ detailValueStyle }}">Residence Valentina</span></div>
+              <div style="{{ detailActionsStyle }}">
+                <button style="{{ secondaryButtonStyle }}" onClick="{{ openModalProfile }}">Modifica profilo</button>
+                <button style="{{ secondaryButtonStyle }}" onClick="{{ openModalPassword }}">Cambia password</button>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isNotifications }}" hint-placeholder-val="{{ false }}">
+          <div>
+            <div style="{{ viewHeaderRowStyle }}">
+              <div style="{{ viewTitleStyle }}">Notifiche</div>
+            </div>
+            <div style="{{ panelStyle }}">
+              <sc-for list="{{ notifRows }}" as="n" hint-placeholder-count="7">
+                <div style="{{ n.rowStyleFull }}">
+                  <span style="{{ n.dotStyle }}"></span>
+                  <div style="{{ n.textWrapStyle }}">
+                    <div style="{{ n.textStyle }}">{{ n.text }}</div>
+                    <div style="{{ n.timeStyle }}">{{ n.timeLabel }}</div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+
+      </main>
+    </div>
+    </div>
+  </sc-if>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;accentColor&quot;: {&quot;editor&quot;: &quot;color&quot;, &quot;default&quot;: &quot;#2F3E8C&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;options&quot;: [&quot;#2F3E8C&quot;, &quot;#0E7C86&quot;, &quot;#2F6B4F&quot;, &quot;#6C3B8C&quot;], &quot;section&quot;: &quot;Aspetto&quot;}, &quot;defaultView&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;default&quot;: &quot;dashboard&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;options&quot;: [&quot;dashboard&quot;, &quot;expenses&quot;, &quot;reports&quot;], &quot;section&quot;: &quot;Comportamento&quot;}, &quot;compactTables&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: false, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Comportamento&quot;}}">
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      mode: 'app',
+      activeView: props.defaultView || 'dashboard',
+      selectedExpenseId: 1,
+      mobileNavOpen: false,
+      notifOpen: false,
+      profileMenuOpen: false,
+      isMobile: typeof window !== 'undefined' ? window.innerWidth < 1024 : false,
+      loginEmail: '', loginPassword: '',
+      formDescription: '', formCategory: 'Manutenzione', formAmount: '', formDate: '',
+      formSplit: 'Millesimi', formNotes: '', formError: '',
+      activeModal: null, modalError: '',
+      unitFormName: '', unitFormOwner: '', unitFormFloor: '', unitFormQuota: '', unitFormStatus: 'Pagato',
+      reportFormTitle: '', reportFormUnit: '', reportFormDescription: '',
+      documentFormTitle: '', documentFormType: 'Verbale',
+      userFormName: '', userFormRole: 'Residente', userFormUnit: '',
+      profileFormName: 'Marco Codeluppi', profileFormEmail: 'm.codeluppi@residencevalentina.it', profileFormPhone: '+39 059 123 4567',
+      passwordFormCurrent: '', passwordFormNext: '', passwordFormConfirm: '',
+      profileName: 'Marco Codeluppi', profileEmail: 'm.codeluppi@residencevalentina.it', profilePhone: '+39 059 123 4567',
+      expenseSplitMethod: 'Millesimi', unitCount: '24'
+    };
+    this.units = [
+      { id: 1, unit: 'Interno 1', owner: 'Rossi Mario', floor: 'Piano 1', quota: '4,2%', statusLabel: 'Pagato' },
+      { id: 2, unit: 'Interno 2', owner: 'Bianchi Laura', floor: 'Piano 1', quota: '4,2%', statusLabel: 'Pagato' },
+      { id: 3, unit: 'Interno 3', owner: 'Verdi Giuseppe', floor: 'Piano 2', quota: '4,5%', statusLabel: 'In attesa' },
+      { id: 4, unit: 'Interno 4', owner: 'Ferrari Anna', floor: 'Piano 2', quota: '4,5%', statusLabel: 'Pagato' },
+      { id: 5, unit: 'Interno 5', owner: 'Colombo Luca', floor: 'Piano 3', quota: '4,8%', statusLabel: 'Scaduto' },
+      { id: 6, unit: 'Interno 6', owner: 'Ricci Sara', floor: 'Piano 3', quota: '4,8%', statusLabel: 'Pagato' },
+      { id: 7, unit: 'Interno 7', owner: 'Marino Paolo', floor: 'Piano 4', quota: '5,0%', statusLabel: 'Pagato' },
+      { id: 8, unit: 'Interno 8', owner: 'Greco Elena', floor: 'Piano 4', quota: '5,0%', statusLabel: 'In attesa' },
+      { id: 9, unit: 'Negozio A', owner: 'Bruno Immobiliare Srl', floor: 'Piano T', quota: '3,1%', statusLabel: 'Pagato' },
+      { id: 10, unit: 'Negozio B', owner: 'Vacante', floor: 'Piano T', quota: '3,1%', statusLabel: 'Vacante' }
+    ];
+    this.expensesData = [
+      { id: 1, dateLabel: '15 ago 2026', description: 'Manutenzione ascensore', category: 'Manutenzione', amountLabel: '\u20ac1.240,00', statusLabel: 'Pagato' },
+      { id: 2, dateLabel: '10 ago 2026', description: 'Pulizia scale', category: 'Pulizie', amountLabel: '\u20ac380,00', statusLabel: 'Pagato' },
+      { id: 3, dateLabel: '05 ago 2026', description: 'Assicurazione stabile', category: 'Assicurazione', amountLabel: '\u20ac2.150,00', statusLabel: 'In attesa' },
+      { id: 4, dateLabel: '28 lug 2026', description: 'Riparazione cancello', category: 'Manutenzione', amountLabel: '\u20ac610,00', statusLabel: 'Pagato' },
+      { id: 5, dateLabel: '20 lug 2026', description: 'Bolletta luce comuni', category: 'Utenze', amountLabel: '\u20ac340,00', statusLabel: 'Scaduto' },
+      { id: 6, dateLabel: '15 lug 2026', description: 'Compenso amministratore', category: 'Amministrazione', amountLabel: '\u20ac900,00', statusLabel: 'Pagato' },
+      { id: 7, dateLabel: '10 lug 2026', description: 'Disinfestazione', category: 'Manutenzione', amountLabel: '\u20ac280,00', statusLabel: 'Pagato' },
+      { id: 8, dateLabel: '01 lug 2026', description: 'Verifica impianto antincendio', category: 'Manutenzione', amountLabel: '\u20ac520,00', statusLabel: 'In attesa' }
+    ];
+    this.reportsData = [
+      { id: 1, title: 'Perdita acqua tubazione garage', unitLabel: 'Interno 5', dateLabel: '12 ago 2026', statusLabel: 'In lavorazione', assignee: 'Idraulica Rossi' },
+      { id: 2, title: 'Luce scale pianerottolo 2 non funziona', unitLabel: 'Interno 3', dateLabel: '10 ago 2026', statusLabel: 'Aperta', assignee: 'non assegnato' },
+      { id: 3, title: 'Citofono guasto ingresso', unitLabel: 'Parti comuni', dateLabel: '08 ago 2026', statusLabel: 'Risolta', assignee: 'Elettricista Bianchi' },
+      { id: 4, title: 'Infiltrazione tetto', unitLabel: 'Interno 8', dateLabel: '05 ago 2026', statusLabel: 'Aperta', assignee: 'non assegnato' },
+      { id: 5, title: 'Cancello garage bloccato', unitLabel: 'Parti comuni', dateLabel: '30 lug 2026', statusLabel: 'Risolta', assignee: 'Fabbro Verdi' },
+      { id: 6, title: 'Ascensore rumoroso', unitLabel: 'Parti comuni', dateLabel: '25 lug 2026', statusLabel: 'In lavorazione', assignee: 'Ascensori Martini' }
+    ];
+    this.documentsData = [
+      { id: 1, title: 'Verbale assemblea ordinaria', typeLabel: 'Verbale', dateLabel: '15 lug 2026' },
+      { id: 2, title: 'Regolamento condominiale', typeLabel: 'Regolamento', dateLabel: '01 gen 2024' },
+      { id: 3, title: 'Bilancio consuntivo 2025', typeLabel: 'Bilancio', dateLabel: '30 apr 2026' },
+      { id: 4, title: 'Preventivo lavori facciata', typeLabel: 'Preventivo', dateLabel: '20 giu 2026' },
+      { id: 5, title: 'Polizza assicurativa 2026', typeLabel: 'Assicurazione', dateLabel: '10 gen 2026' },
+      { id: 6, title: 'Planimetria stabile', typeLabel: 'Planimetria', dateLabel: '05 mar 2020' }
+    ];
+    this.notifsData = [
+      { id: 1, text: 'Nuova segnalazione: Perdita acqua garage', timeLabel: '2h fa', unread: true },
+      { id: 2, text: 'Pagamento ricevuto \u2014 Interno 1', timeLabel: '5h fa', unread: true },
+      { id: 3, text: 'Documento caricato: Bilancio consuntivo 2025', timeLabel: '1g fa', unread: false },
+      { id: 4, text: 'Promemoria: Assemblea ordinaria il 20 set', timeLabel: '1g fa', unread: true },
+      { id: 5, text: 'Segnalazione risolta: Citofono ingresso', timeLabel: '2g fa', unread: false },
+      { id: 6, text: 'Nuovo commento su Riparazione cancello', timeLabel: '3g fa', unread: false },
+      { id: 7, text: 'Fattura in scadenza: Assicurazione stabile', timeLabel: '4g fa', unread: false }
+    ];
+    this.usersData = [
+      { id: 1, name: 'Marco Codeluppi', roleLabel: 'Amministratore' },
+      { id: 2, name: 'Rossi Mario', roleLabel: 'Residente \u00b7 Interno 1' }
+    ];
+    this._onResize = () => this.setState({ isMobile: window.innerWidth < 1024 });
+  }
+
+  componentDidMount() {
+    window.addEventListener('resize', this._onResize);
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this._onResize);
+  }
+
+  getTheme() {
+    const primary = this.props.accentColor || '#2F3E8C';
+    return {
+      primary,
+      primarySoft: `color-mix(in oklab, ${primary} 12%, white)`,
+      primarySofter: `color-mix(in oklab, ${primary} 6%, white)`,
+      primaryDark: `color-mix(in oklab, ${primary} 85%, black)`,
+      ink: '#1c2230', sub: '#5b6472', border: '#e2e5eb',
+      bg: '#f6f7f9', surface: '#ffffff',
+      success: '#1f8a5b', successSoft: '#e4f4ec',
+      warn: '#b5790f', warnSoft: '#fbeecd',
+      danger: '#c23b3b', dangerSoft: '#f9e4e4',
+      neutralSoft: '#eef0f3', neutralFg: '#6b7280'
+    };
+  }
+
+  statusStyle(theme, label) {
+    const map = {
+      'Pagato': { bg: theme.successSoft, fg: theme.success },
+      'In attesa': { bg: theme.warnSoft, fg: theme.warn },
+      'Scaduto': { bg: theme.dangerSoft, fg: theme.danger },
+      'Aperta': { bg: theme.dangerSoft, fg: theme.danger },
+      'In lavorazione': { bg: theme.warnSoft, fg: theme.warn },
+      'Risolta': { bg: theme.successSoft, fg: theme.success },
+      'Vacante': { bg: theme.neutralSoft, fg: theme.neutralFg }
+    };
+    const c = map[label] || { bg: theme.neutralSoft, fg: theme.neutralFg };
+    return {
+      display: 'inline-block', padding: '4px 10px', borderRadius: 999,
+      fontSize: 12.5, fontWeight: 600, background: c.bg, color: c.fg, whiteSpace: 'nowrap'
+    };
+  }
+
+  navItem(theme, key, label, isMobile, closeMobile) {
+    const active = this.state.activeView === key;
+    return {
+      key, label,
+      style: {
+        display: 'flex', alignItems: 'center', gap: 10, width: '100%',
+        padding: '10px 14px', margin: '1px 8px', borderRadius: 8, border: 'none',
+        background: active ? theme.primarySoft : 'transparent',
+        color: active ? theme.primaryDark : theme.sub,
+        fontWeight: active ? 700 : 500, fontSize: 14.5, textAlign: 'left', cursor: 'pointer',
+        fontFamily: 'inherit'
+      },
+      dotStyle: { width: 6, height: 6, borderRadius: 999, background: active ? theme.primary : theme.border, flexShrink: 0 },
+      textStyle: {},
+      onClick: () => { this.setState({ activeView: key, notifOpen: false, profileMenuOpen: false, mobileNavOpen: false }); }
+    };
+  }
+
+  renderVals() {
+    const s = this.state;
+    const theme = this.getTheme();
+    const tableRowPad = this.props.compactTables ? '9px 16px' : '14px 16px';
+    const tableFont = this.props.compactTables ? 13.5 : 14.5;
+
+    const mapExpense = (e, withClick) => ({
+      ...e,
+      badgeStyle: this.statusStyle(theme, e.statusLabel),
+      cellStrongStyle: { padding: tableRowPad, fontSize: tableFont, fontWeight: 600, color: theme.ink },
+      cellStyle: { padding: tableRowPad, fontSize: tableFont, color: theme.sub },
+      rowStyle5: { display: 'grid', gridTemplateColumns: '110px 1.6fr 1fr 110px 110px', alignItems: 'center', borderBottom: `1px solid ${theme.border}`, cursor: 'pointer' },
+      miniRowStyle: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderBottom: `1px solid ${theme.border}`, cursor: withClick ? 'pointer' : 'default' },
+      miniTitleStyle: { fontSize: 14, fontWeight: 600, color: theme.ink },
+      miniSubStyle: { fontSize: 12.5, color: theme.sub, marginTop: 2 },
+      miniRightStyle: { textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4 },
+      miniAmountStyle: { fontSize: 13.5, fontWeight: 700, color: theme.ink },
+      onClick: withClick ? () => this.setState({ activeView: 'expenseDetail', selectedExpenseId: e.id }) : undefined
+    });
+
+    const expenseRows = this.expensesData.map(e => mapExpense(e, true));
+    const recentExpenses = expenseRows.slice(0, 5);
+    const selectedExpense = expenseRows.find(e => e.id === s.selectedExpenseId) || expenseRows[0];
+
+    const unitRows = this.units.map(u => ({
+      ...u,
+      badgeStyle: this.statusStyle(theme, u.statusLabel),
+      rowStyle: { display: 'grid', gridTemplateColumns: '1fr 1.6fr 1fr 1.4fr 1fr', alignItems: 'center', borderBottom: `1px solid ${theme.border}` },
+      cellStrongStyle: { padding: tableRowPad, fontSize: tableFont, fontWeight: 600, color: theme.ink },
+      cellStyle: { padding: tableRowPad, fontSize: tableFont, color: theme.sub }
+    }));
+
+    const reportRows = this.reportsData.map(r => ({
+      ...r,
+      badgeStyle: this.statusStyle(theme, r.statusLabel)
+    }));
+    const openReports = reportRows.filter(r => r.statusLabel !== 'Risolta').map(r => ({
+      ...r,
+      miniRowStyle: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderBottom: `1px solid ${theme.border}`, gap: 12 },
+      miniTitleStyle: { fontSize: 14, fontWeight: 600, color: theme.ink },
+      miniSubStyle: { fontSize: 12.5, color: theme.sub, marginTop: 2 }
+    }));
+
+    const documentRows = this.documentsData.map(d => ({ ...d }));
+
+    const mapNotif = (n) => ({
+      ...n,
+      dotStyle: { width: 7, height: 7, borderRadius: 999, background: n.unread ? theme.primary : theme.border, marginTop: 6, flexShrink: 0 },
+      rowStyle: { display: 'flex', gap: 10, padding: '10px 16px', borderBottom: `1px solid ${theme.border}` },
+      rowStyleFull: { display: 'flex', gap: 12, padding: '14px 18px', borderBottom: `1px solid ${theme.border}` },
+      textWrapStyle: {},
+      textStyle: { fontSize: 14, color: theme.ink, fontWeight: n.unread ? 600 : 500 },
+      timeStyle: { fontSize: 12, color: theme.sub, marginTop: 2 }
+    });
+    const notifRows = this.notifsData.map(mapNotif);
+    const notifPreview = notifRows.slice(0, 4);
+    const hasUnread = this.notifsData.some(n => n.unread);
+
+    const isMobile = s.isMobile;
+    const activeView = s.activeView;
+
+    const navItemsGeneral = [
+      this.navItem(theme, 'dashboard', 'Dashboard'),
+      this.navItem(theme, 'units', 'Unit\u00e0'),
+      this.navItem(theme, 'expenses', 'Spese & pagamenti'),
+      this.navItem(theme, 'reports', 'Segnalazioni'),
+      this.navItem(theme, 'documents', 'Documenti')
+    ];
+    const navItemsAccount = [
+      this.navItem(theme, 'settings', 'Impostazioni'),
+      this.navItem(theme, 'profile', 'Profilo')
+    ];
+
+    const titles = {
+      dashboard: 'Dashboard', units: 'Unit\u00e0 immobiliari', expenses: 'Spese & pagamenti',
+      expenseDetail: 'Dettaglio spesa', expenseForm: 'Nuova spesa', reports: 'Segnalazioni',
+      documents: 'Documenti & bacheca', settings: 'Impostazioni', profile: 'Profilo', notifications: 'Notifiche'
+    };
+
+    return {
+      isLogin: s.mode === 'login', isApp: s.mode === 'app',
+      appShellStyle: { fontFamily: "'Source Sans 3', system-ui, sans-serif", background: theme.bg, color: theme.ink, minHeight: '100vh', position: 'relative' },
+      appFrameStyle: { display: 'flex', minHeight: '100vh' },
+
+      loginWrapStyle: { minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 },
+      loginCardStyle: { width: '100%', maxWidth: 380, background: theme.surface, borderRadius: 16, padding: '36px 32px', boxShadow: '0 12px 40px rgba(20,25,40,0.08)', border: `1px solid ${theme.border}` },
+      logoBadgeStyle: { width: 48, height: 48, borderRadius: 12, background: theme.primary, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 18, marginBottom: 16 },
+      loginTitleStyle: { fontSize: 22, fontWeight: 700, marginBottom: 4 },
+      loginSubStyle: { fontSize: 14, color: theme.sub, marginBottom: 24, lineHeight: 1.4 },
+      loginLinksStyle: { display: 'flex', flexDirection: 'column', gap: 8, marginTop: 16, alignItems: 'center' },
+      linkStyle: { fontSize: 13, color: theme.primary, fontWeight: 600 },
+
+      fieldGroupStyle: { display: 'flex', flexDirection: 'column', gap: 6, marginBottom: 16 },
+      fieldGroupFullStyle: { display: 'flex', flexDirection: 'column', gap: 6, marginBottom: 16, gridColumn: '1 / -1' },
+      labelStyle: { fontSize: 12.5, fontWeight: 600, color: theme.sub },
+      inputStyle: { padding: '10px 12px', borderRadius: 8, border: `1px solid ${theme.border}`, fontSize: 14.5, fontFamily: 'inherit', color: theme.ink, background: '#fff', width: '100%' },
+      textareaStyle: { padding: '10px 12px', borderRadius: 8, border: `1px solid ${theme.border}`, fontSize: 14.5, fontFamily: 'inherit', color: theme.ink, background: '#fff', width: '100%', minHeight: 80, resize: 'vertical' },
+      primaryButtonStyle: { width: '100%', padding: '12px 16px', borderRadius: 8, border: 'none', background: theme.primary, color: '#fff', fontWeight: 700, fontSize: 15, cursor: 'pointer', fontFamily: 'inherit' },
+      primaryButtonSmallStyle: { padding: '10px 16px', borderRadius: 8, border: 'none', background: theme.primary, color: '#fff', fontWeight: 700, fontSize: 14, cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap' },
+      secondaryButtonStyle: { padding: '10px 16px', borderRadius: 8, border: `1px solid ${theme.border}`, background: '#fff', color: theme.ink, fontWeight: 600, fontSize: 14, cursor: 'pointer', fontFamily: 'inherit' },
+      dangerButtonStyle: { padding: '10px 16px', borderRadius: 8, border: `1px solid ${theme.dangerSoft}`, background: theme.dangerSoft, color: theme.danger, fontWeight: 600, fontSize: 14, cursor: 'pointer', fontFamily: 'inherit' },
+
+      onLoginEmailChange: (e) => this.setState({ loginEmail: e.target.value }),
+      onLoginPasswordChange: (e) => this.setState({ loginPassword: e.target.value }),
+      onLogin: () => this.setState({ mode: 'app', activeView: 'dashboard' }),
+      onLogout: () => this.setState({ mode: 'login', profileMenuOpen: false }),
+
+      dropdownOverlayStyle: { display: (s.notifOpen || s.profileMenuOpen) ? 'block' : 'none', position: 'fixed', inset: 0, zIndex: 40 },
+      closeMenus: () => this.setState({ notifOpen: false, profileMenuOpen: false }),
+
+      backdropStyle: { display: (isMobile && s.mobileNavOpen) ? 'block' : 'none', position: 'fixed', inset: 0, background: 'rgba(15,20,30,0.45)', zIndex: 45 },
+      closeMobileNav: () => this.setState({ mobileNavOpen: false }),
+      toggleMobileNav: () => this.setState({ mobileNavOpen: !s.mobileNavOpen }),
+
+      sidebarStyle: isMobile ? {
+        position: 'fixed', top: 0, left: 0, height: '100%', width: 260, background: theme.surface,
+        borderRight: `1px solid ${theme.border}`, zIndex: 46, transform: s.mobileNavOpen ? 'translateX(0)' : 'translateX(-100%)',
+        transition: 'transform 0.22s ease', overflowY: 'auto', paddingBottom: 24
+      } : {
+        position: 'sticky', top: 0, height: '100vh', width: 248, background: theme.surface,
+        borderRight: `1px solid ${theme.border}`, flexShrink: 0, overflowY: 'auto', paddingBottom: 24
+      },
+      sidebarHeaderStyle: { display: 'flex', alignItems: 'center', gap: 10, padding: '20px 16px', marginBottom: 8 },
+      logoBadgeSmallStyle: { width: 34, height: 34, borderRadius: 9, background: theme.primary, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 13, flexShrink: 0 },
+      sidebarBrandStyle: { fontSize: 14.5, fontWeight: 700, lineHeight: 1.2 },
+      sidebarBrandSubStyle: { fontSize: 12, color: theme.sub },
+      navGroupLabelStyle: { fontSize: 11, fontWeight: 700, color: theme.sub, letterSpacing: '0.06em', textTransform: 'uppercase', padding: '14px 20px 6px' },
+
+      mainColStyle: { display: 'flex', flexDirection: 'column', flex: 1, minWidth: 0 },
+      topbarStyle: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 64, padding: '0 20px', borderBottom: `1px solid ${theme.border}`, background: theme.surface, position: 'sticky', top: 0, zIndex: 30, gap: 16 },
+      topbarLeftStyle: { display: 'flex', alignItems: 'center', gap: 14, minWidth: 0 },
+      hamburgerStyle: { display: isMobile ? 'flex' : 'none', alignItems: 'center', justifyContent: 'center', width: 36, height: 36, borderRadius: 8, border: `1px solid ${theme.border}`, background: '#fff', fontSize: 16, cursor: 'pointer', flexShrink: 0 },
+      pageTitleStyle: { fontSize: 17, fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' },
+      topbarRightStyle: { display: 'flex', alignItems: 'center', gap: 10 },
+      searchInputStyle: { display: isMobile ? 'none' : 'block', width: 220, padding: '8px 12px', borderRadius: 8, border: `1px solid ${theme.border}`, fontSize: 13.5, fontFamily: 'inherit', background: theme.bg },
+      dropdownAnchorStyle: { position: 'relative', zIndex: 41 },
+      iconButtonStyle: { position: 'relative', width: 36, height: 36, borderRadius: 999, border: `1px solid ${theme.border}`, background: '#fff', fontSize: 15, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' },
+      unreadDotStyle: { position: 'absolute', top: 6, right: 6, width: 8, height: 8, borderRadius: 999, background: theme.danger, border: '2px solid #fff' },
+      avatarButtonStyle: { width: 36, height: 36, borderRadius: 999, background: theme.primarySoft, color: theme.primaryDark, border: 'none', fontWeight: 700, fontSize: 13, cursor: 'pointer' },
+
+      notifDropdownStyle: { position: 'absolute', top: 46, right: 0, width: 320, background: theme.surface, border: `1px solid ${theme.border}`, borderRadius: 12, boxShadow: '0 12px 32px rgba(20,25,40,0.12)', overflow: 'hidden' },
+      dropdownHeaderStyle: { padding: '12px 16px', fontWeight: 700, fontSize: 14, borderBottom: `1px solid ${theme.border}` },
+      dropdownFooterLinkStyle: { width: '100%', padding: '12px 16px', border: 'none', background: '#fff', color: theme.primary, fontWeight: 700, fontSize: 13.5, cursor: 'pointer', fontFamily: 'inherit' },
+      goNotifications: () => this.setState({ activeView: 'notifications', notifOpen: false }),
+      toggleNotif: () => this.setState({ notifOpen: !s.notifOpen, profileMenuOpen: false }),
+
+      profileDropdownStyle: { position: 'absolute', top: 46, right: 0, width: 220, background: theme.surface, border: `1px solid ${theme.border}`, borderRadius: 12, boxShadow: '0 12px 32px rgba(20,25,40,0.12)', padding: '12px 8px' },
+      profileDropdownNameStyle: { fontSize: 14, fontWeight: 700, padding: '2px 10px' },
+      profileDropdownRoleStyle: { fontSize: 12, color: theme.sub, padding: '0 10px 8px' },
+      dropdownDividerStyle: { height: 1, background: theme.border, margin: '4px 0' },
+      dropdownItemStyle: { width: '100%', textAlign: 'left', padding: '9px 10px', border: 'none', background: 'transparent', fontSize: 13.5, color: theme.ink, cursor: 'pointer', borderRadius: 6, fontFamily: 'inherit' },
+      dropdownItemDangerStyle: { width: '100%', textAlign: 'left', padding: '9px 10px', border: 'none', background: 'transparent', fontSize: 13.5, color: theme.danger, fontWeight: 600, cursor: 'pointer', borderRadius: 6, fontFamily: 'inherit' },
+      toggleProfileMenu: () => this.setState({ profileMenuOpen: !s.profileMenuOpen, notifOpen: false }),
+      goProfile: () => this.setState({ activeView: 'profile', profileMenuOpen: false }),
+      goSettings: () => this.setState({ activeView: 'settings', profileMenuOpen: false }),
+
+      contentStyle: { flex: 1, padding: isMobile ? '20px 16px 40px' : '28px 32px 48px', overflowY: 'auto' },
+
+      isDashboard: activeView === 'dashboard', isUnits: activeView === 'units', isExpenses: activeView === 'expenses',
+      isExpenseDetail: activeView === 'expenseDetail', isExpenseForm: activeView === 'expenseForm',
+      isReports: activeView === 'reports', isDocuments: activeView === 'documents',
+      isSettings: activeView === 'settings', isProfile: activeView === 'profile', isNotifications: activeView === 'notifications',
+      pageTitle: titles[activeView] || 'Dashboard',
+
+      greetingStyle: { fontSize: 24, fontWeight: 700 },
+      greetingSubStyle: { fontSize: 14.5, color: theme.sub, marginTop: 4, marginBottom: 24 },
+      kpiRowStyle: { display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)', gap: 16, marginBottom: 28 },
+      kpiCardStyle: { background: theme.surface, border: `1px solid ${theme.border}`, borderRadius: 14, padding: '20px 22px' },
+      kpiLabelStyle: { fontSize: 13, color: theme.sub, fontWeight: 600 },
+      kpiValueStyle: { fontSize: 26, fontWeight: 700, marginTop: 8 },
+      kpiSubStyle: { fontSize: 12.5, color: theme.sub, marginTop: 6 },
+      kpis: [
+        { label: 'Saldo cassa', value: '\u20ac48.230,50', sub: 'Al 12 agosto 2026' },
+        { label: 'Prossima scadenza', value: 'Assemblea ordinaria', sub: '20 settembre 2026' },
+        { label: 'Unit\u00e0 gestite', value: '24 unit\u00e0', sub: '21 occupate \u00b7 3 vacanti' }
+      ],
+
+      dashGridStyle: { display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1.3fr 1fr', gap: 20 },
+      panelStyle: { background: theme.surface, border: `1px solid ${theme.border}`, borderRadius: 14, padding: '20px 22px', marginBottom: 20 },
+      panelHeaderStyle: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 },
+      panelTitleStyle: { fontSize: 15.5, fontWeight: 700, marginBottom: 4 },
+      panelLinkStyle: { border: 'none', background: 'transparent', color: theme.primary, fontWeight: 700, fontSize: 13, cursor: 'pointer', fontFamily: 'inherit' },
+      recentExpenses, openReports,
+      goExpenses: () => this.setState({ activeView: 'expenses' }),
+      goReports: () => this.setState({ activeView: 'reports' }),
+      goExpenseForm: () => this.setState({ activeView: 'expenseForm', formError: '', formSplit: s.expenseSplitMethod }),
+
+      viewHeaderRowStyle: { display: 'flex', justifyContent: 'space-between', alignItems: isMobile ? 'flex-start' : 'center', flexDirection: isMobile ? 'column' : 'row', gap: 12, marginBottom: 20 },
+      viewTitleStyle: { fontSize: 22, fontWeight: 700 },
+      viewSubStyle: { fontSize: 13.5, color: theme.sub, marginTop: 4 },
+
+      tableCardStyle: { background: theme.surface, border: `1px solid ${theme.border}`, borderRadius: 14, overflow: 'hidden' },
+      tableHeaderRowStyle: { display: 'grid', gridTemplateColumns: '1fr 1.6fr 1fr 1.4fr 1fr', background: theme.bg, borderBottom: `1px solid ${theme.border}` },
+      tableHeaderRowStyle5: { display: 'grid', gridTemplateColumns: '110px 1.6fr 1fr 110px 110px', background: theme.bg, borderBottom: `1px solid ${theme.border}` },
+      tableHeadCellStyle: { padding: '12px 16px', fontSize: 12, fontWeight: 700, color: theme.sub, textTransform: 'uppercase', letterSpacing: '0.03em' },
+      unitRows, expenseRows,
+
+      backLinkStyle: { border: 'none', background: 'transparent', color: theme.primary, fontWeight: 700, fontSize: 13.5, cursor: 'pointer', fontFamily: 'inherit', marginBottom: 16, padding: 0 },
+      detailGridStyle: { display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1.4fr 1fr', gap: 20, alignItems: 'start' },
+      selectedExpense,
+      detailTitleStyle: { fontSize: 20, fontWeight: 700 },
+      detailSubStyle: { fontSize: 13.5, color: theme.sub, marginTop: 4, marginBottom: 16 },
+      detailAmountStyle: { fontSize: 30, fontWeight: 700, marginBottom: 20 },
+      detailRowStyle: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderTop: `1px solid ${theme.border}` },
+      detailLabelStyle: { fontSize: 13, color: theme.sub, fontWeight: 600 },
+      detailValueStyle: { fontSize: 13.5, color: theme.ink, fontWeight: 600 },
+      detailActionsStyle: { display: 'flex', gap: 10, marginTop: 20 },
+      timelineRowStyle: { display: 'flex', alignItems: 'center', gap: 10, fontSize: 13.5, color: theme.ink, padding: '8px 0' },
+      timelineDotDoneStyle: { width: 8, height: 8, borderRadius: 999, background: theme.success, flexShrink: 0 },
+      timelineDotPendingStyle: { width: 8, height: 8, borderRadius: 999, background: theme.border, flexShrink: 0 },
+
+      formCardStyle: { background: theme.surface, border: `1px solid ${theme.border}`, borderRadius: 14, padding: '24px 28px', maxWidth: 640 },
+      formGridStyle: { display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: '0 20px', marginTop: 20 },
+      formErrorStyle: { color: theme.danger, fontSize: 13.5, fontWeight: 600, marginTop: -4, marginBottom: 12 },
+      formDescription: s.formDescription, formCategory: s.formCategory, formAmount: s.formAmount, formDate: s.formDate,
+      formSplit: s.formSplit, formNotes: s.formNotes, formError: s.formError,
+      onFormDescriptionChange: (e) => this.setState({ formDescription: e.target.value }),
+      onFormCategoryChange: (e) => this.setState({ formCategory: e.target.value }),
+      onFormAmountChange: (e) => this.setState({ formAmount: e.target.value }),
+      onFormDateChange: (e) => this.setState({ formDate: e.target.value }),
+      onFormSplitChange: (e) => this.setState({ formSplit: e.target.value }),
+      onFormNotesChange: (e) => this.setState({ formNotes: e.target.value }),
+      onSaveExpense: () => {
+        if (!s.formDescription.trim() || !s.formAmount) {
+          this.setState({ formError: 'Descrizione e importo sono obbligatori.' });
+          return;
+        }
+        const amt = parseFloat(s.formAmount) || 0;
+        const newExp = {
+          id: this.expensesData.length + 1,
+          dateLabel: s.formDate ? new Date(s.formDate).toLocaleDateString('it-IT', { day: '2-digit', month: 'short', year: 'numeric' }) : 'oggi',
+          description: s.formDescription, category: s.formCategory,
+          amountLabel: amt.toLocaleString('it-IT', { style: 'currency', currency: 'EUR' }),
+          statusLabel: 'In attesa'
+        };
+        this.expensesData = [newExp, ...this.expensesData];
+        this.setState({ activeView: 'expenses', formDescription: '', formAmount: '', formDate: '', formNotes: '', formError: '' });
+      },
+
+      cardListStyle: { display: 'flex', flexDirection: 'column', gap: 12 },
+      reportCardStyle: { background: theme.surface, border: `1px solid ${theme.border}`, borderRadius: 12, padding: '16px 20px' },
+      reportCardHeaderStyle: { display: 'flex', justifyContent: 'space-between', gap: 12, alignItems: 'flex-start' },
+      reportCardTitleStyle: { fontSize: 15, fontWeight: 700 },
+      reportCardMetaStyle: { fontSize: 13, color: theme.sub, marginTop: 8 },
+      reportRows,
+
+      docGridStyle: { display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)', gap: 16 },
+      docCardStyle: { background: theme.surface, border: `1px solid ${theme.border}`, borderRadius: 12, padding: '18px 18px 16px' },
+      docTypeChipStyle: { display: 'inline-block', fontSize: 11.5, fontWeight: 700, color: theme.primaryDark, background: theme.primarySoft, padding: '3px 9px', borderRadius: 999, marginBottom: 10 },
+      docTitleStyle: { fontSize: 14.5, fontWeight: 700, marginBottom: 4, lineHeight: 1.3 },
+      docDateStyle: { fontSize: 12.5, color: theme.sub, marginBottom: 14 },
+      docDownloadStyle: { border: `1px solid ${theme.border}`, background: '#fff', color: theme.ink, fontWeight: 600, fontSize: 13, padding: '7px 12px', borderRadius: 7, cursor: 'pointer', fontFamily: 'inherit' },
+      documentRows,
+
+      settingsGridStyle: { display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)', gap: 20 },
+      toggleRowStyle: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 14, padding: '10px 0', borderTop: `1px solid ${theme.border}` },
+      toggleOnStyle: { width: 40, height: 22, borderRadius: 999, background: theme.primary, border: 'none', position: 'relative', cursor: 'pointer', padding: 0 },
+      toggleOffStyle: { width: 40, height: 22, borderRadius: 999, background: theme.border, border: 'none', position: 'relative', cursor: 'pointer', padding: 0 },
+      toggleKnobOnStyle: { position: 'absolute', top: 2, right: 2, width: 18, height: 18, borderRadius: 999, background: '#fff' },
+      toggleKnobOffStyle: { position: 'absolute', top: 2, left: 2, width: 18, height: 18, borderRadius: 999, background: '#fff' },
+      userRowStyle: { display: 'flex', alignItems: 'center', gap: 10, padding: '10px 0', borderTop: `1px solid ${theme.border}` },
+      avatarSmallStyle: { width: 30, height: 30, borderRadius: 999, background: theme.primarySoft, color: theme.primaryDark, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 11.5, flexShrink: 0 },
+      userNameStyle: { fontSize: 13.5, fontWeight: 600 },
+      userRoleStyle: { fontSize: 12, color: theme.sub },
+
+      profileCardStyle: { background: theme.surface, border: `1px solid ${theme.border}`, borderRadius: 14, padding: '28px 28px', maxWidth: 420 },
+      profileAvatarStyle: { width: 60, height: 60, borderRadius: 999, background: theme.primarySoft, color: theme.primaryDark, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 20, marginBottom: 14 },
+      profileNameStyle: { fontSize: 18, fontWeight: 700 },
+      profileRoleStyle: { fontSize: 13.5, color: theme.sub, marginBottom: 18 },
+      profileFieldRowStyle: { display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderTop: `1px solid ${theme.border}`, fontSize: 13.5 },
+
+      notifRows, notifPreview, hasUnread,
+      notifOpen: s.notifOpen, profileMenuOpen: s.profileMenuOpen,
+
+      navItemsGeneral, navItemsAccount,
+
+      unitCount: s.unitCount, onUnitCountChange: (e) => this.setState({ unitCount: e.target.value }),
+      userListRows: this.usersData.map(u => ({ ...u, initials: u.name.split(' ').map(p => p[0]).join('').slice(0, 2).toUpperCase() })),
+      splitOptions: [
+        { key: 'Unita', label: 'Per unit\u00e0 abitativa' },
+        { key: 'Persone', label: 'Per numero di persone' },
+        { key: 'Millesimi', label: 'Per millesimi' }
+      ].map(o => {
+        const selected = s.expenseSplitMethod === o.key;
+        return {
+          ...o,
+          rowStyle: { display: 'flex', alignItems: 'center', gap: 10, width: '100%', padding: '10px 4px', border: 'none', background: 'transparent', cursor: 'pointer', fontFamily: 'inherit', borderTop: `1px solid ${theme.border}`, textAlign: 'left' },
+          radioOuterStyle: { width: 18, height: 18, borderRadius: 999, border: `2px solid ${selected ? theme.primary : theme.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 },
+          radioInnerStyle: { width: 9, height: 9, borderRadius: 999, background: selected ? theme.primary : 'transparent' },
+          labelStyle: { fontSize: 14, color: theme.ink, fontWeight: selected ? 700 : 500 },
+          onClick: () => this.setState({ expenseSplitMethod: o.key })
+        };
+      }),
+      profileName: s.profileName, profileEmail: s.profileEmail, profilePhone: s.profilePhone,
+      profileInitials: s.profileName.split(' ').map(p => p[0]).join('').slice(0, 2).toUpperCase(),
+
+      activeModal: s.activeModal, modalError: s.modalError,
+      isModalUnit: s.activeModal === 'unit', isModalReport: s.activeModal === 'report', isModalDocument: s.activeModal === 'document',
+      isModalUser: s.activeModal === 'user', isModalProfile: s.activeModal === 'profile', isModalPassword: s.activeModal === 'password',
+      modalTitle: ({ unit: 'Nuova unit\u00e0', report: 'Nuova segnalazione', document: 'Carica documento', user: 'Nuovo utente', profile: 'Modifica profilo', password: 'Cambia password' })[s.activeModal] || '',
+      closeModal: () => this.setState({ activeModal: null, modalError: '' }),
+      stopPropagation: (e) => e.stopPropagation(),
+      openModalUnit: () => this.setState({ activeModal: 'unit', modalError: '', unitFormName: '', unitFormOwner: '', unitFormFloor: '', unitFormQuota: '', unitFormStatus: 'Pagato' }),
+      openModalReport: () => this.setState({ activeModal: 'report', modalError: '', reportFormTitle: '', reportFormUnit: '', reportFormDescription: '' }),
+      openModalDocument: () => this.setState({ activeModal: 'document', modalError: '', documentFormTitle: '', documentFormType: 'Verbale' }),
+      openModalUser: () => this.setState({ activeModal: 'user', modalError: '', userFormName: '', userFormRole: 'Residente', userFormUnit: '' }),
+      openModalProfile: () => this.setState({ activeModal: 'profile', modalError: '', profileFormName: s.profileName, profileFormEmail: s.profileEmail, profileFormPhone: s.profilePhone }),
+      openModalPassword: () => this.setState({ activeModal: 'password', modalError: '', passwordFormCurrent: '', passwordFormNext: '', passwordFormConfirm: '' }),
+
+      modalOverlayStyle: { position: 'fixed', inset: 0, background: 'rgba(15,20,30,0.5)', zIndex: 60, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 },
+      modalCardStyle: { width: '100%', maxWidth: 460, maxHeight: '85vh', display: 'flex', flexDirection: 'column', background: theme.surface, borderRadius: 14, padding: '22px 26px 0', boxShadow: '0 20px 60px rgba(20,25,40,0.2)' },
+      modalHeaderStyle: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 18, flexShrink: 0 },
+      modalScrollAreaStyle: { overflowY: 'auto', flex: 1, minHeight: 0 },
+      modalFooterStyle: { display: 'flex', gap: 10, padding: '16px 0 22px', flexShrink: 0 },
+      modalTitleStyle: { fontSize: 18, fontWeight: 700 },
+      modalCloseStyle: { border: 'none', background: 'transparent', fontSize: 20, color: theme.sub, cursor: 'pointer', lineHeight: 1, padding: 4 },
+      modalFieldStackStyle: { display: 'flex', flexDirection: 'column' },
+
+      unitFormName: s.unitFormName, unitFormOwner: s.unitFormOwner, unitFormFloor: s.unitFormFloor, unitFormQuota: s.unitFormQuota, unitFormStatus: s.unitFormStatus,
+      onUnitFormNameChange: (e) => this.setState({ unitFormName: e.target.value }),
+      onUnitFormOwnerChange: (e) => this.setState({ unitFormOwner: e.target.value }),
+      onUnitFormFloorChange: (e) => this.setState({ unitFormFloor: e.target.value }),
+      onUnitFormQuotaChange: (e) => this.setState({ unitFormQuota: e.target.value }),
+      onUnitFormStatusChange: (e) => this.setState({ unitFormStatus: e.target.value }),
+
+      reportFormTitle: s.reportFormTitle, reportFormUnit: s.reportFormUnit, reportFormDescription: s.reportFormDescription,
+      onReportFormTitleChange: (e) => this.setState({ reportFormTitle: e.target.value }),
+      onReportFormUnitChange: (e) => this.setState({ reportFormUnit: e.target.value }),
+      onReportFormDescriptionChange: (e) => this.setState({ reportFormDescription: e.target.value }),
+
+      documentFormTitle: s.documentFormTitle, documentFormType: s.documentFormType,
+      onDocumentFormTitleChange: (e) => this.setState({ documentFormTitle: e.target.value }),
+      onDocumentFormTypeChange: (e) => this.setState({ documentFormType: e.target.value }),
+
+      userFormName: s.userFormName, userFormRole: s.userFormRole, userFormUnit: s.userFormUnit,
+      onUserFormNameChange: (e) => this.setState({ userFormName: e.target.value }),
+      onUserFormRoleChange: (e) => this.setState({ userFormRole: e.target.value }),
+      onUserFormUnitChange: (e) => this.setState({ userFormUnit: e.target.value }),
+
+      profileFormName: s.profileFormName, profileFormEmail: s.profileFormEmail, profileFormPhone: s.profileFormPhone,
+      onProfileFormNameChange: (e) => this.setState({ profileFormName: e.target.value }),
+      onProfileFormEmailChange: (e) => this.setState({ profileFormEmail: e.target.value }),
+      onProfileFormPhoneChange: (e) => this.setState({ profileFormPhone: e.target.value }),
+
+      passwordFormCurrent: s.passwordFormCurrent, passwordFormNext: s.passwordFormNext, passwordFormConfirm: s.passwordFormConfirm,
+      onPasswordFormCurrentChange: (e) => this.setState({ passwordFormCurrent: e.target.value }),
+      onPasswordFormNextChange: (e) => this.setState({ passwordFormNext: e.target.value }),
+      onPasswordFormConfirmChange: (e) => this.setState({ passwordFormConfirm: e.target.value }),
+
+      onSaveModal: () => {
+        const m = s.activeModal;
+        if (m === 'unit') {
+          if (!s.unitFormName.trim() || !s.unitFormOwner.trim()) { this.setState({ modalError: 'Unit\u00e0 e proprietario sono obbligatori.' }); return; }
+          this.units = [...this.units, { id: this.units.length + 1, unit: s.unitFormName, owner: s.unitFormOwner, floor: s.unitFormFloor || '\u2014', quota: s.unitFormQuota || '\u2014', statusLabel: s.unitFormStatus }];
+        } else if (m === 'report') {
+          if (!s.reportFormTitle.trim()) { this.setState({ modalError: 'Il titolo \u00e8 obbligatorio.' }); return; }
+          this.reportsData = [{ id: this.reportsData.length + 1, title: s.reportFormTitle, unitLabel: s.reportFormUnit || 'Parti comuni', dateLabel: 'oggi', statusLabel: 'Aperta', assignee: 'non assegnato' }, ...this.reportsData];
+        } else if (m === 'document') {
+          if (!s.documentFormTitle.trim()) { this.setState({ modalError: 'Il titolo \u00e8 obbligatorio.' }); return; }
+          this.documentsData = [{ id: this.documentsData.length + 1, title: s.documentFormTitle, typeLabel: s.documentFormType, dateLabel: 'oggi' }, ...this.documentsData];
+        } else if (m === 'user') {
+          if (!s.userFormName.trim()) { this.setState({ modalError: 'Il nome \u00e8 obbligatorio.' }); return; }
+          this.usersData = [...this.usersData, { id: this.usersData.length + 1, name: s.userFormName, roleLabel: s.userFormRole === 'Amministratore' ? 'Amministratore' : ('Residente' + (s.userFormUnit ? ' \u00b7 ' + s.userFormUnit : '')) }];
+        } else if (m === 'profile') {
+          if (!s.profileFormName.trim() || !s.profileFormEmail.trim()) { this.setState({ modalError: 'Nome e email sono obbligatori.' }); return; }
+          this.setState({ profileName: s.profileFormName, profileEmail: s.profileFormEmail, profilePhone: s.profileFormPhone });
+        } else if (m === 'password') {
+          if (!s.passwordFormCurrent || !s.passwordFormNext || !s.passwordFormConfirm) { this.setState({ modalError: 'Compila tutti i campi.' }); return; }
+          if (s.passwordFormNext !== s.passwordFormConfirm) { this.setState({ modalError: 'Le nuove password non coincidono.' }); return; }
+        }
+        this.setState({ activeModal: null, modalError: '' });
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>
