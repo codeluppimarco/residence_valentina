@@ -4,14 +4,16 @@ import { useEffect, useState, type ReactNode } from "react";
 import { usePathname } from "next/navigation";
 import { Sidebar } from "./Sidebar";
 import { Topbar } from "./Topbar";
-import { currentUser, notifications } from "@/lib/mock-data";
+import { notifications } from "@/lib/mock-data";
 import { getPageTitle } from "@/lib/nav";
 
 type DashboardShellProps = {
   children: ReactNode;
+  userName: string;
+  userRoleLabel: string;
 };
 
-export function DashboardShell({ children }: DashboardShellProps) {
+export function DashboardShell({ children, userName, userRoleLabel }: DashboardShellProps) {
   const pathname = usePathname();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
@@ -65,8 +67,8 @@ export function DashboardShell({ children }: DashboardShellProps) {
             setNotifOpen(false);
           }}
           onCloseMenus={closeMenus}
-          userName={currentUser.name}
-          userRoleLabel={currentUser.roleLabel}
+          userName={userName}
+          userRoleLabel={userRoleLabel}
         />
 
         <main className="flex-1 overflow-y-auto px-4 py-5 sm:px-8 sm:py-7">{children}</main>

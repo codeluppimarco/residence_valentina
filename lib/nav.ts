@@ -7,6 +7,8 @@ export const navGeneral: NavItem[] = [
   { href: "/dashboard", label: "Dashboard" },
   { href: "/units", label: "Unità" },
   { href: "/expenses", label: "Spese & pagamenti" },
+  { href: "/cash-ledger", label: "Registro di cassa" },
+  { href: "/events", label: "Eventi" },
   { href: "/reports", label: "Segnalazioni" },
   { href: "/documents", label: "Documenti" },
 ];
@@ -25,6 +27,8 @@ export function getPageTitle(pathname: string): string {
   if (pathname === "/expenses/new") return "Nuova spesa";
   if (pathname.startsWith("/expenses/")) return "Dettaglio spesa";
   if (pathname.startsWith("/expenses")) return "Spese & pagamenti";
+  if (pathname.startsWith("/cash-ledger")) return "Registro di cassa";
+  if (pathname.startsWith("/events")) return "Eventi";
   if (pathname.startsWith("/reports")) return "Segnalazioni";
   if (pathname.startsWith("/documents")) return "Documenti & bacheca";
   if (pathname.startsWith("/settings")) return "Impostazioni";

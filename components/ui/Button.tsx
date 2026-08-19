@@ -28,7 +28,7 @@ export function buttonClasses(
   className?: string,
 ): string {
   return cn(
-    "inline-flex items-center justify-center rounded-input font-semibold font-sans cursor-pointer whitespace-nowrap transition-colors",
+    "inline-flex items-center justify-center rounded-input font-semibold font-sans cursor-pointer whitespace-nowrap transition-colors disabled:cursor-not-allowed disabled:opacity-60",
     variantClasses[variant],
     sizeClasses[size],
     variant === "primary" && "font-bold",

@@ -11,10 +11,22 @@ type ModalProps = {
   onSave: () => void;
   error?: string;
   saveLabel?: string;
+  onDelete?: () => void;
+  deleteLabel?: string;
   children: ReactNode;
 };
 
-export function Modal({ open, title, onClose, onSave, error, saveLabel = "Salva", children }: ModalProps) {
+export function Modal({
+  open,
+  title,
+  onClose,
+  onSave,
+  error,
+  saveLabel = "Salva",
+  onDelete,
+  deleteLabel = "Elimina",
+  children,
+}: ModalProps) {
   const titleId = useId();
 
   useEffect(() => {
@@ -66,13 +78,20 @@ export function Modal({ open, title, onClose, onSave, error, saveLabel = "Salva"
             <FormError message={error} />
           </div>
 
-          <div className="flex shrink-0 gap-2.5 py-4">
-            <Button type="submit" variant="primary" size="sm">
-              {saveLabel}
-            </Button>
-            <Button type="button" variant="secondary" size="sm" onClick={onClose}>
-              Annulla
-            </Button>
+          <div className="flex shrink-0 items-center justify-between gap-2.5 py-4">
+            <div className="flex gap-2.5">
+              <Button type="submit" variant="primary" size="sm">
+                {saveLabel}
+              </Button>
+              <Button type="button" variant="secondary" size="sm" onClick={onClose}>
+                Annulla
+              </Button>
+            </div>
+            {onDelete && (
+              <Button type="button" variant="danger" size="sm" onClick={onDelete}>
+                {deleteLabel}
+              </Button>
+            )}
           </div>
         </form>
       </div>

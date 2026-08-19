@@ -3,11 +3,20 @@ import { buttonClasses } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { TableCard, TableCell, TableCellStrong, TableHeaderRow, TableHeadCell } from "@/components/ui/Table";
 import { cn } from "@/lib/cn";
-import { expenses } from "@/lib/mock-data";
+import { formatCurrency, formatDate } from "@/lib/format";
+import { aggregatePaymentStatus } from "@/lib/status";
+import type { PaymentStatus } from "@/lib/db-types";
+import { createClient } from "@/lib/supabase/server";
 
 const GRID_COLS = "grid-cols-[110px_1.6fr_1fr_110px_110px]";
 
-export default function ExpensesPage() {
+export default async function ExpensesPage() {
+  const supabase = await createClient();
+  const { data: expenses } = await supabase
+    .from("expenses")
+    .select("id, description, category, amount, expense_date, expense_shares(payments(status))")
+    .order("expense_date", { ascending: false });
+
   return (
     <div>
       <div className="mb-5 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
@@ -28,24 +37,32 @@ export default function ExpensesPage() {
           <TableHeadCell>Importo</TableHeadCell>
           <TableHeadCell>Stato</TableHeadCell>
         </TableHeaderRow>
-        {expenses.map((expense) => (
-          <Link
-            key={expense.id}
-            href={`/expenses/${expense.id}`}
-            className={cn(
-              GRID_COLS,
-              "grid min-w-[640px] items-center border-b border-border last:border-b-0 hover:bg-bg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-primary",
-            )}
-          >
-            <TableCell>{expense.dateLabel}</TableCell>
-            <TableCellStrong>{expense.description}</TableCellStrong>
-            <TableCell>{expense.category}</TableCell>
-            <TableCell>{expense.amountLabel}</TableCell>
-            <TableCell>
-              <Badge status={expense.status} />
-            </TableCell>
-          </Link>
-        ))}
+        {(expenses ?? []).map((expense) => {
+          const statuses = expense.expense_shares
+            .map((es) => es.payments?.status)
+            .filter((s): s is PaymentStatus => Boolean(s));
+          return (
+            <Link
+              key={expense.id}
+              href={`/expenses/${expense.id}`}
+              className={cn(
+                GRID_COLS,
+                "grid min-w-[640px] items-center border-b border-border last:border-b-0 hover:bg-bg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-primary",
+              )}
+            >
+              <TableCell>{formatDate(expense.expense_date)}</TableCell>
+              <TableCellStrong>{expense.description}</TableCellStrong>
+              <TableCell>{expense.category}</TableCell>
+              <TableCell>{formatCurrency(expense.amount)}</TableCell>
+              <TableCell>
+                <Badge status={aggregatePaymentStatus(statuses)} />
+              </TableCell>
+            </Link>
+          );
+        })}
+        {(expenses ?? []).length === 0 && (
+          <div className="px-4 py-8 text-center text-sm text-sub">Nessuna spesa registrata.</div>
+        )}
       </TableCard>
     </div>
   );

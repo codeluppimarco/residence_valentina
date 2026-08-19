@@ -7,15 +7,29 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
 import { FieldGroup } from "@/components/ui/FieldGroup";
+import { FormError } from "@/components/ui/FormError";
+import { createClient } from "@/lib/supabase/client";
 
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setError("");
+    setLoading(true);
+    const supabase = createClient();
+    const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+    setLoading(false);
+    if (signInError) {
+      setError("Email o password non corrette.");
+      return;
+    }
     router.push("/dashboard");
+    router.refresh();
   }
 
   return (
@@ -47,8 +61,9 @@ export default function LoginPage() {
             onChange={(event) => setPassword(event.target.value)}
           />
         </FieldGroup>
-        <Button type="submit" variant="primary" size="md" fullWidth>
-          Accedi
+        <FormError message={error} />
+        <Button type="submit" variant="primary" size="md" fullWidth disabled={loading}>
+          {loading ? "Accesso in corso…" : "Accedi"}
         </Button>
       </form>
 
